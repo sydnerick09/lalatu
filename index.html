@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agent Payouts</title>
+  <title>Business Hub Payouts</title>
   <link rel="preconnect" href="https://js.paystack.co" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,8 +12,8 @@
     <div class="brand">
       <span class="logo">₭</span>
       <div>
-        <h1>Agent Payouts</h1>
-        <p class="sub">Paystack &middot; USD → KES</p>
+        <h1>Business Hub Payouts</h1>
+        <p class="sub">Agent Withdrawals &middot; Paystack</p>
       </div>
     </div>
     <div class="rate-pill" id="ratePill">
@@ -23,18 +23,23 @@
   </header>
 
   <main class="container">
+    <section class="hero">
+      <h2 class="hero-title">Withdraw all your amounts</h2>
+      <p class="hero-sub">Instant agent payouts, settled in Kenyan Shillings.</p>
+    </section>
+
     <section class="summary">
       <div class="summary-card">
         <span class="summary-label">Total Agents</span>
-        <span class="summary-value">7</span>
+        <span class="summary-value" id="countTotal">7</span>
       </div>
       <div class="summary-card">
-        <span class="summary-label">Paid</span>
-        <span class="summary-value green">6</span>
+        <span class="summary-label">Withdrawn</span>
+        <span class="summary-value green" id="countPaid">5</span>
       </div>
       <div class="summary-card">
         <span class="summary-label">Pending</span>
-        <span class="summary-value amber">1</span>
+        <span class="summary-value yellow" id="countPending">2</span>
       </div>
     </section>
 

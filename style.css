@@ -1,20 +1,21 @@
 :root {
-  --bg: #0b1020;
-  --panel: #141b30;
-  --panel-2: #1b2440;
-  --text: #e8ecf6;
-  --muted: #8b96b3;
-  --green: #2fd47b;
-  --amber: #ffb020;
-  --accent: #4f8cff;
-  --border: #26304e;
+  --bg: #23282d;           /* charcoal */
+  --panel: #2c3238;
+  --panel-2: #353c43;
+  --text: #f0f3f5;
+  --muted: #9aa5ad;
+  --green: #27c24c;
+  --green-2: #1fa33f;
+  --yellow: #ffce3a;
+  --yellow-2: #f5b301;
+  --border: #3d454d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: radial-gradient(1200px 600px at 80% -10%, #1a2a55 0%, transparent 60%), var(--bg);
+  background: radial-gradient(1200px 600px at 85% -10%, #2f3a2f 0%, transparent 60%), var(--bg);
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -27,7 +28,7 @@ body {
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid var(--border);
-  background: rgba(20, 27, 48, 0.6);
+  background: rgba(44, 50, 56, 0.7);
   backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
@@ -40,9 +41,9 @@ body {
   width: 44px; height: 44px;
   display: grid; place-items: center;
   font-size: 22px; font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), #7b5cff);
+  background: linear-gradient(135deg, var(--green), var(--yellow));
   border-radius: 12px;
-  color: #fff;
+  color: #1c1f22;
 }
 
 .topbar h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
@@ -59,12 +60,22 @@ body {
 }
 .rate-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 0 4px rgba(255,176,32,0.15);
+  background: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(255,206,58,0.15);
 }
-.rate-pill.live .rate-dot { background: var(--green); box-shadow: 0 0 0 4px rgba(47,212,123,0.15); }
+.rate-pill.live .rate-dot { background: var(--green); box-shadow: 0 0 0 4px rgba(39,194,76,0.15); }
 
 .container { max-width: 760px; margin: 0 auto; padding: 28px 24px 60px; }
+
+.hero {
+  background: linear-gradient(135deg, rgba(39,194,76,0.14), rgba(255,206,58,0.10));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 26px 24px;
+  margin-bottom: 26px;
+}
+.hero-title { font-size: 24px; font-weight: 800; letter-spacing: 0.2px; }
+.hero-sub { font-size: 14px; color: var(--muted); margin-top: 6px; }
 
 .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 30px; }
 .summary-card {
@@ -77,7 +88,7 @@ body {
 .summary-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
 .summary-value { font-size: 26px; font-weight: 700; }
 .summary-value.green { color: var(--green); }
-.summary-value.amber { color: var(--amber); }
+.summary-value.yellow { color: var(--yellow); }
 
 .section-title { font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
 
@@ -91,12 +102,12 @@ body {
   padding: 16px 18px;
   transition: transform 0.12s ease, border-color 0.12s ease;
 }
-.agent:hover { border-color: #33406a; }
+.agent:hover { border-color: #4c5660; }
 
 .avatar {
   width: 46px; height: 46px; border-radius: 12px;
   display: grid; place-items: center;
-  font-weight: 700; font-size: 16px; color: #fff;
+  font-weight: 700; font-size: 16px; color: #1c1f22;
   flex-shrink: 0;
 }
 
@@ -109,14 +120,14 @@ body {
   font-size: 12px; font-weight: 600;
   padding: 5px 10px; border-radius: 999px;
 }
-.status.paid { color: var(--green); background: rgba(47,212,123,0.12); }
-.status.pending { color: var(--amber); background: rgba(255,176,32,0.12); }
+.status.paid { color: var(--green); background: rgba(39,194,76,0.14); }
+.status.pending { color: var(--yellow); background: rgba(255,206,58,0.14); }
 
 .pay-btn {
   border: none; cursor: pointer;
   font-family: inherit; font-size: 14px; font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, var(--accent), #7b5cff);
+  color: #1c1f22;
+  background: linear-gradient(135deg, var(--green), var(--yellow));
   padding: 11px 20px; border-radius: 10px;
   transition: transform 0.1s ease, opacity 0.1s ease;
   white-space: nowrap;
@@ -134,13 +145,13 @@ body {
   padding: 10px 16px; border-radius: 10px;
   transition: border-color 0.1s ease;
 }
-.paid-tag:hover { border-color: #33406a; color: var(--text); }
+.paid-tag:hover { border-color: var(--green); color: var(--green); }
 
 .toast {
   position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px);
   background: var(--panel-2); border: 1px solid var(--border);
   color: var(--text); padding: 14px 20px; border-radius: 12px;
-  font-size: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  font-size: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.45);
   opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 50;
   max-width: 90vw; text-align: center;
 }

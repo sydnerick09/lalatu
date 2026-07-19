@@ -15,7 +15,7 @@ const CUSTOMER_EMAIL = "omondierickouma01@gmail.com";
 const AGENTS = [
   { name: "Kevin",    status: "paid" },
   { name: "Waithaka", status: "pending", amountUSD: 25 },
-  { name: "Lydia",    status: "paid" },
+  { name: "Lydia",    status: "pending", amountUSD: 32 },
   { name: "Diana",    status: "paid" },
   { name: "Mercy",    status: "paid" },
   { name: "Victor",   status: "paid" },
@@ -104,12 +104,12 @@ function payWithPaystack(agent, buttonEl) {
     callback: function (response) {
       agent.status = "paid";
       render();
-      toast("Payment successful — ref " + response.reference);
+      toast("Withdrawal successful — ref " + response.reference);
     },
     onClose: function () {
       buttonEl.disabled = false;
       buttonEl.textContent = original;
-      toast("Payment window closed.");
+      toast("Withdrawal window closed.");
     },
   });
 
@@ -117,9 +117,23 @@ function payWithPaystack(agent, buttonEl) {
 }
 
 /* ---------------------------------------------------------------- render */
+function updateCounts() {
+  const total = AGENTS.length;
+  const pending = AGENTS.filter((a) => a.status === "pending").length;
+  const paid = total - pending;
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+  set("countTotal", total);
+  set("countPaid", paid);
+  set("countPending", pending);
+}
+
 function render() {
   const list = document.getElementById("agentList");
   list.innerHTML = "";
+  updateCounts();
 
   AGENTS.forEach((agent, i) => {
     const li = document.createElement("li");
@@ -149,21 +163,20 @@ function render() {
     if (agent.status === "pending") {
       const kes = agent.amountUSD * usdToKes;
       meta.innerHTML =
-        '<span class="status pending">● Pending</span> &nbsp; $' +
-        agent.amountUSD + " ≈ " + formatKES(kes);
+        '<span class="status pending">● Pending</span> &nbsp; Ready to withdraw';
 
       const btn = document.createElement("button");
       btn.className = "pay-btn";
-      btn.textContent = "Pay " + formatKES(kes);
+      btn.textContent = "Withdraw " + formatKES(kes);
       btn.addEventListener("click", () => payWithPaystack(agent, btn));
       li.appendChild(btn);
     } else {
-      meta.innerHTML = '<span class="status paid">● Paid</span> &nbsp; Payout completed';
+      meta.innerHTML = '<span class="status paid">● Withdrawn</span> &nbsp; Withdrawal completed';
 
       const tag = document.createElement("button");
       tag.className = "paid-tag";
-      tag.textContent = "Paid ✓";
-      tag.addEventListener("click", () => toast(agent.name + " has already been paid."));
+      tag.textContent = "Withdrawn ✓";
+      tag.addEventListener("click", () => toast(agent.name + " has already withdrawn."));
       li.appendChild(tag);
     }
 

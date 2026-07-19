@@ -1,13 +1,11 @@
 /* =========================================================================
-   CONFIG  —  EDIT THESE TWO VALUES
+   CONFIG  —  EDIT THIS VALUE
    ========================================================================= */
 
-// 1) Your Paystack PUBLIC key (starts with pk_live_ or pk_test_).
-//    Public keys are safe to expose in the browser. NEVER put a secret key here.
+// Your Paystack PUBLIC key (starts with pk_live_ or pk_test_).
+// Public keys are safe to expose in the browser. NEVER put a secret key here.
+// The payer enters their own email at checkout — nothing is hardcoded here.
 const PAYSTACK_PUBLIC_KEY = "pk_live_2346f4a63a07a0caa7bccc56847fb197405c1295";
-
-// 2) The email Paystack should attach to the transaction (receipt goes here).
-const CUSTOMER_EMAIL = "omondierickouma01@gmail.com";
 
 /* =========================================================================
    Agents. Only Waithaka is pending; everyone else is already paid.
@@ -71,7 +69,12 @@ async function loadRate() {
   render(); // re-render so pending amounts reflect the fresh rate
 }
 
-/* ---------------------------------------------------------- Paystack pay */
+/* ------------------------------------------------ email prompt + Paystack */
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+}
+
+// Step 1: ask the payer for their own email, then continue to Paystack.
 function payWithPaystack(agent, buttonEl) {
   if (!window.PaystackPop) {
     toast("Payment library still loading — try again in a second.");
@@ -81,7 +84,11 @@ function payWithPaystack(agent, buttonEl) {
     toast("Set your Paystack public key in script.js first.");
     return;
   }
+  openEmailModal(agent, buttonEl);
+}
 
+// Step 2: actually open the Paystack checkout with the payer's email.
+function startCheckout(agent, buttonEl, email) {
   const amountKES = agent.amountUSD * usdToKes;
   const amountInCents = Math.round(amountKES * 100); // Paystack uses the minor unit
 
@@ -91,14 +98,14 @@ function payWithPaystack(agent, buttonEl) {
 
   const handler = PaystackPop.setup({
     key: PAYSTACK_PUBLIC_KEY,
-    email: CUSTOMER_EMAIL,
+    email: email,
     amount: amountInCents,
     currency: "KES",
     ref: "PAYOUT-" + agent.name.toUpperCase() + "-" + Date.now(),
     metadata: {
       custom_fields: [
-        { display_name: "Agent",         variable_name: "agent",     value: agent.name },
-        { display_name: "USD Amount",    variable_name: "usd_amount", value: String(agent.amountUSD) },
+        { display_name: "Agent",      variable_name: "agent",      value: agent.name },
+        { display_name: "USD Amount", variable_name: "usd_amount", value: String(agent.amountUSD) },
       ],
     },
     callback: function (response) {
@@ -114,6 +121,45 @@ function payWithPaystack(agent, buttonEl) {
   });
 
   handler.openIframe();
+}
+
+/* ----------------------------------------------------------- email modal */
+function openEmailModal(agent, buttonEl) {
+  const overlay = document.getElementById("emailModal");
+  const input = document.getElementById("emailInput");
+  const err = document.getElementById("emailError");
+  const confirmBtn = document.getElementById("emailConfirm");
+  const cancelBtn = document.getElementById("emailCancel");
+
+  document.getElementById("modalTitle").textContent = "Withdraw payout";
+  input.value = "";
+  err.textContent = "";
+  overlay.classList.add("show");
+  setTimeout(() => input.focus(), 50);
+
+  function cleanup() {
+    overlay.classList.remove("show");
+    confirmBtn.onclick = null;
+    cancelBtn.onclick = null;
+    input.onkeydown = null;
+    overlay.onclick = null;
+  }
+
+  function confirm() {
+    const email = input.value.trim();
+    if (!isValidEmail(email)) {
+      err.textContent = "Please enter a valid email address.";
+      input.focus();
+      return;
+    }
+    cleanup();
+    startCheckout(agent, buttonEl, email);
+  }
+
+  confirmBtn.onclick = confirm;
+  cancelBtn.onclick = cleanup;
+  input.onkeydown = (e) => { if (e.key === "Enter") confirm(); };
+  overlay.onclick = (e) => { if (e.target === overlay) cleanup(); };
 }
 
 /* ---------------------------------------------------------------- render */
@@ -161,13 +207,12 @@ function render() {
     li.appendChild(info);
 
     if (agent.status === "pending") {
-      const kes = agent.amountUSD * usdToKes;
       meta.innerHTML =
         '<span class="status pending">● Pending</span> &nbsp; Ready to withdraw';
 
       const btn = document.createElement("button");
       btn.className = "pay-btn";
-      btn.textContent = "Withdraw " + formatKES(kes);
+      btn.textContent = "Withdraw";
       btn.addEventListener("click", () => payWithPaystack(agent, btn));
       li.appendChild(btn);
     } else {

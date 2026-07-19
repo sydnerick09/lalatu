@@ -16,11 +16,11 @@ Open `script.js` and set your **public** key (the one that starts with `pk_`):
 
 ```js
 const PAYSTACK_PUBLIC_KEY = "pk_live_xxxxxxxxxxxxxxxxxxxxxxxx";
-const CUSTOMER_EMAIL      = "you@example.com";
 ```
 
 > Only the **public** key goes in the browser — it is safe to expose.
 > **Never** put your secret key (`sk_...`) in this file.
+> The payer enters **their own email** at checkout — no email is hardcoded.
 > To charge in **KES**, your Paystack account must be a **Kenya** account with KES enabled.
 
 ## 2. Test locally

@@ -49,6 +49,26 @@
 
   <div class="toast" id="toast"></div>
 
+  <div class="modal-overlay" id="emailModal">
+    <div class="modal">
+      <h3 class="modal-title" id="modalTitle">Withdraw payout</h3>
+      <p class="modal-sub">Enter your email to continue to payment.</p>
+      <input
+        type="email"
+        id="emailInput"
+        class="modal-input"
+        placeholder="you@example.com"
+        autocomplete="email"
+        inputmode="email"
+      />
+      <div class="modal-error" id="emailError"></div>
+      <div class="modal-actions">
+        <button class="modal-btn ghost" id="emailCancel">Cancel</button>
+        <button class="modal-btn primary" id="emailConfirm">Continue to Paystack</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <script src="script.js"></script>
 </body>

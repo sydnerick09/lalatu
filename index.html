@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Payouts</title>
+  <link rel="preconnect" href="https://js.paystack.co" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">₭</span>
+      <div>
+        <h1>Agent Payouts</h1>
+        <p class="sub">Paystack &middot; USD → KES</p>
+      </div>
+    </div>
+    <div class="rate-pill" id="ratePill">
+      <span class="rate-dot"></span>
+      <span id="rateText">Loading rate…</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="summary">
+      <div class="summary-card">
+        <span class="summary-label">Total Agents</span>
+        <span class="summary-value">7</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Paid</span>
+        <span class="summary-value green">6</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Pending</span>
+        <span class="summary-value amber">1</span>
+      </div>
+    </section>
+
+    <h2 class="section-title">Agents</h2>
+    <ul class="agent-list" id="agentList"></ul>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

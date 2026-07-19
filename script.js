@@ -13,7 +13,7 @@ const PAYSTACK_PUBLIC_KEY = "pk_live_2346f4a63a07a0caa7bccc56847fb197405c1295";
 const AGENTS = [
   { name: "Kevin",    status: "paid" },
   { name: "Waithaka", status: "pending", amountUSD: 25 },
-  { name: "Lydia",    status: "pending", amountUSD: 32 },
+  { name: "Lydia",    status: "paid" },
   { name: "Diana",    status: "paid" },
   { name: "Mercy",    status: "paid" },
   { name: "Victor",   status: "paid" },

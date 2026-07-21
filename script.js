@@ -17,7 +17,7 @@ const AGENTS = [
   { name: "Diana",    status: "paid" },
   { name: "Mercy",    status: "paid" },
   { name: "Victor",   status: "paid" },
-  { name: "Roseline", status: "paid" },
+  { name: "Roseline", status: "pending", amountKES: 5 },
 ];
 
 // A fallback rate is used only if the live rate API is unreachable.
@@ -89,7 +89,8 @@ function payWithPaystack(agent, buttonEl) {
 
 // Step 2: actually open the Paystack checkout with the payer's email.
 function startCheckout(agent, buttonEl, email) {
-  const amountKES = agent.amountUSD * usdToKes;
+  // A flat KES amount (amountKES) takes precedence; otherwise convert from USD.
+  const amountKES = agent.amountKES != null ? agent.amountKES : agent.amountUSD * usdToKes;
   const amountInCents = Math.round(amountKES * 100); // Paystack uses the minor unit
 
   buttonEl.disabled = true;
@@ -105,7 +106,8 @@ function startCheckout(agent, buttonEl, email) {
     metadata: {
       custom_fields: [
         { display_name: "Agent",      variable_name: "agent",      value: agent.name },
-        { display_name: "USD Amount", variable_name: "usd_amount", value: String(agent.amountUSD) },
+        { display_name: "Amount",     variable_name: "amount",
+          value: agent.amountKES != null ? formatKES(agent.amountKES) : String(agent.amountUSD) + " USD" },
       ],
     },
     callback: function (response) {

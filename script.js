@@ -17,7 +17,7 @@ const AGENTS = [
   { name: "Diana",    status: "paid" },
   { name: "Mercy",    status: "paid" },
   { name: "Victor",   status: "paid" },
-  { name: "Roseline", status: "pending", amountKES: 5 },
+  { name: "Roseline", status: "pending", amountUSD: 17 },
 ];
 
 // A fallback rate is used only if the live rate API is unreachable.
